@@ -38,4 +38,5 @@ Add the report generation for completed tests with screenshots of the failed UI 
 - [Java SE 17](https://docs.oracle.com/en/java/javase/17/);
 - [Selenide](https://selenide.org/documentation.html);
 - [TestNG](https://testng.org/doc/);
-- [Apache Maven](https://maven.apache.org/).
+- [Apache Maven](https://maven.apache.org/);
+- [Lombok](https://projectlombok.org/).
