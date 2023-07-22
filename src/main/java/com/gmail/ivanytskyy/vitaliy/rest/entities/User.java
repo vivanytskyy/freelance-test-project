@@ -1,5 +1,6 @@
 package com.gmail.ivanytskyy.vitaliy.rest.entities;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,6 +11,7 @@ import lombok.ToString;
  * @date 17/07/2023
  */
 @Data
+@Builder
 public class User {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

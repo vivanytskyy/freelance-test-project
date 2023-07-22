@@ -14,7 +14,11 @@ public class UserAuthorizationService {
     public static void authorize(){
         String username = CredentialPropertiesSupplier.getInstance().getProperty("username");
         String password = CredentialPropertiesSupplier.getInstance().getProperty("password");
-        UserCredentialsWrapper permit = new UserCredentialsWrapper();
+        UserCredentialsWrapper permit = UserCredentialsWrapper.builder()
+                .username(username)
+                .password(password)
+                .confirmPassword(password)
+                .build();
         permit.setUsername(username);
         permit.setPassword(password);
         permit.setConfirmPassword(password);
