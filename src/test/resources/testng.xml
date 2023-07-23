@@ -1,8 +1,14 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="rest_api">
+<suite name="all_tests">
     <test name="rest">
         <classes>
-            <class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>
+            <!--<class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>-->
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.AuthTest"/>
         </classes>
+    </test>
+    <test name="unit" enabled="false">
+        <packages>
+            <package name="com.gmail.ivanytskyy.vitaliy.unit"/>
+        </packages>
     </test>
 </suite>
