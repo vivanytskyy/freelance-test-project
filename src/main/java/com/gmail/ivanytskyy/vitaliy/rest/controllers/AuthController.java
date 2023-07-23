@@ -26,8 +26,6 @@ public class AuthController extends BaseController{
                 .build();
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.code() != 200){
-                //Write to log file
-                System.out.println(response);
                 throw new UnexpectedHttpStatusCodeException(response.code());
             }
         }
@@ -42,8 +40,6 @@ public class AuthController extends BaseController{
                 .build();
         try (Response response = httpClient.newCall(request).execute()) {
             if (response.code() != 200){
-                //Write to log file
-                System.out.println(response);
                 throw new UnexpectedHttpStatusCodeException(response.code());
             }
             assert response.body() != null;
