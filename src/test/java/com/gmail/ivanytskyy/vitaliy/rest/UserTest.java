@@ -6,6 +6,7 @@ import com.gmail.ivanytskyy.vitaliy.rest.entities.User;
 import com.gmail.ivanytskyy.vitaliy.rest.exceptions.UnexpectedHttpStatusCodeException;
 import com.gmail.ivanytskyy.vitaliy.utils.CredentialPropertiesSupplier;
 import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.io.IOException;
@@ -51,21 +52,21 @@ public class UserTest extends BaseTest{
         controller.getUser(invalidToken);
     }
     @Test(description = "Get user by invalid id (id is negative number). Negative case.", priority = 50)
-    public void findUserByInvalidIdIsNegativeNumberTest() throws IOException {
+    public void findUserByInvalidIdAsNegativeNumberTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("-1", TokenHolder.getInstance().getToken());
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is 0). Negative case.", priority = 60)
-    public void findUserByInvalidIdIsZeroTest() throws IOException {
+    public void findUserByInvalidIdAsZeroTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("0", TokenHolder.getInstance().getToken());
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
-    @Test(description = "Get user by invalid id (id is Long.MAX_VALUE). Negative case.", priority = 70)
-    public void findUserByInvalidIdIsLongMaxValueTest() throws IOException {
+    @Test(description = "Get user by id (user doesn't exist). Negative case.", priority = 70)
+    public void findUserByIdUserDoesNotExistTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase(Long.MAX_VALUE + "",
                 TokenHolder.getInstance().getToken());
@@ -73,7 +74,7 @@ public class UserTest extends BaseTest{
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is null). Negative case.", priority = 80)
-    public void findUserByInvalidIdIsNullTest() throws IOException {
+    public void findUserByInvalidIdAsNullTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("null",
                 TokenHolder.getInstance().getToken());
@@ -81,7 +82,7 @@ public class UserTest extends BaseTest{
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is true). Negative case.", priority = 90)
-    public void findUserByInvalidIdIsTrueTest() throws IOException {
+    public void findUserByInvalidIdAsTrueTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("true",
                 TokenHolder.getInstance().getToken());
@@ -89,16 +90,15 @@ public class UserTest extends BaseTest{
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is NaN). Negative case.", priority = 100)
-    public void findUserByInvalidIdIsNaNTest() throws IOException {
+    public void findUserByInvalidIdAsNaNTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("NaN",
                 TokenHolder.getInstance().getToken());
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
-    @Test(description = "Get user by invalid id (id is string like float number format). Negative case.",
-            priority = 110)
-    public void findUserByInvalidIdIsFloatNumberTest() throws IOException {
+    @Test(description = "Get user by invalid id (id is float number as string). Negative case.", priority = 110)
+    public void findUserByInvalidIdAsFloatNumberTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
         int statusCode = controller.findUserByIdNegativeCase(
@@ -107,89 +107,122 @@ public class UserTest extends BaseTest{
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Update user (name = null). Negative case.", priority = 120)
-    public void updateUserInvalidNameIsNullTest() throws IOException {
+    public void updateUserInvalidNameAsNullTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
-        Faker faker = new Faker();
-        String lastname = faker.name().lastName();
-        String invalidBody = String.format(
-                "{\"id\": %s, \"username\": \"%s\", \"name\": %s, \"lastname\": \"%s\"}",
-                defaulUser.getId(), defaulUser.getUsername(), null, lastname);
+        String lastname = new Faker().name().lastName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", JSONObject.NULL)
+                .put("lastname", lastname);
         String token = TokenHolder.getInstance().getToken();
-        int statusCode = controller.updateUserNegativeCase(invalidBody, token);
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Update user (lastname = null). Negative case.", priority = 130)
-    public void updateUserInvalidLastNameIsNullTest() throws IOException {
+    public void updateUserInvalidLastNameAsNullTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
-        Faker faker = new Faker();
-        String name = faker.name().firstName();
-        defaulUser.setLastname(faker.name().lastName());
-        String invalidBody = String.format(
-                "{\"id\": %s, \"username\": \"%s\", \"name\": \"%s\", \"lastname\": %s}",
-                defaulUser.getId(), defaulUser.getUsername(), name, null);
+        String name = new Faker().name().firstName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", name)
+                .put("lastname", JSONObject.NULL);
         String token = TokenHolder.getInstance().getToken();
-        int statusCode = controller.updateUserNegativeCase(invalidBody, token);
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Update user (name = false). Negative case.", priority = 140)
-    public void updateUserInvalidNameIsBooleanTest() throws IOException {
+    public void updateUserInvalidNameAsBooleanTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
-        Faker faker = new Faker();
-        String lastname = faker.name().lastName();
-        String invalidBody = String.format(
-                "{\"id\": %s, \"username\": \"%s\", \"name\": %s, \"lastname\": \"%s\"}",
-                defaulUser.getId(), defaulUser.getUsername(), false, lastname);
+        String lastname = new Faker().name().lastName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", false)
+                .put("lastname", lastname);
         String token = TokenHolder.getInstance().getToken();
-        int statusCode = controller.updateUserNegativeCase(invalidBody, token);
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Update user (lastname = true). Negative case.", priority = 150)
-    public void updateUserInvalidLastNameIsBooleanTest() throws IOException {
+    public void updateUserInvalidLastNameAsBooleanTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
-        Faker faker = new Faker();
-        String name = faker.name().firstName();
-        defaulUser.setLastname(faker.name().lastName());
-        String invalidBody = String.format(
-                "{\"id\": %s, \"username\": \"%s\", \"name\": \"%s\", \"lastname\": %s}",
-                defaulUser.getId(), defaulUser.getUsername(), name, true);
+        String name = new Faker().name().firstName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", name)
+                .put("lastname", true);
         String token = TokenHolder.getInstance().getToken();
-        int statusCode = controller.updateUserNegativeCase(invalidBody, token);
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Update user (name is number). Negative case.", priority = 160)
-    public void updateUserInvalidNameIsNumberTest() throws IOException {
+    public void updateUserInvalidNameAsNumberTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
-        Faker faker = new Faker();
-        String lastname = faker.name().lastName();
-        String invalidBody = String.format(
-                "{\"id\": %s, \"username\": \"%s\", \"name\": %s, \"lastname\": \"%s\"}",
-                defaulUser.getId(), defaulUser.getUsername(), 15, lastname);
+        String lastname = new Faker().name().lastName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", 15)
+                .put("lastname", lastname);
         String token = TokenHolder.getInstance().getToken();
-        int statusCode = controller.updateUserNegativeCase(invalidBody, token);
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
     @Test(description = "Update user (lastname is number). Negative case.", priority = 170)
-    public void updateUserInvalidLastNameIsNumberTest() throws IOException {
+    public void updateUserInvalidLastNameAsNumberTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
-        Faker faker = new Faker();
-        String name = faker.name().firstName();
-        defaulUser.setLastname(faker.name().lastName());
-        String invalidBody = String.format(
-                "{\"id\": %s, \"username\": \"%s\", \"name\": \"%s\", \"lastname\": %s}",
-                defaulUser.getId(), defaulUser.getUsername(), name, 15);
+        String name = new Faker().name().firstName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", name)
+                .put("lastname", 15);
         String token = TokenHolder.getInstance().getToken();
-        int statusCode = controller.updateUserNegativeCase(invalidBody, token);
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
+        Assert.assertTrue(statusCode >= 400 && statusCode < 500,
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Update user (name is empty string). Negative case.", priority = 180)
+    public void updateUserInvalidNameAsEmptyStringTest() throws IOException {
+        UserController controller = new UserController();
+        User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
+        String lastname = new Faker().name().lastName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", "")
+                .put("lastname", lastname);
+        String token = TokenHolder.getInstance().getToken();
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
+        Assert.assertTrue(statusCode >= 400 && statusCode < 500,
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Update user (lastname is empty string). Negative case.", priority = 190)
+    public void updateUserInvalidLastNameAsEmptyStringTest() throws IOException {
+        UserController controller = new UserController();
+        User defaulUser = controller.getUser(TokenHolder.getInstance().getToken());
+        String name = new Faker().name().firstName();
+        JSONObject json = new JSONObject();
+        json.put("id", defaulUser.getId())
+                .put("username", defaulUser.getUsername())
+                .put("name", name)
+                .put("lastname", "");
+        String token = TokenHolder.getInstance().getToken();
+        int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(statusCode >= 400 && statusCode < 500,
                 "Incorrect HTTP response status code " + statusCode);
     }
