@@ -8,8 +8,10 @@ import com.gmail.ivanytskyy.vitaliy.rest.entities.authorization.TokenResponseWra
 import com.gmail.ivanytskyy.vitaliy.rest.entities.authorization.UserCredentialsWrapper;
 import com.gmail.ivanytskyy.vitaliy.rest.exceptions.UnexpectedHttpStatusCodeException;
 import com.gmail.ivanytskyy.vitaliy.utils.CredentialPropertiesSupplier;
+import static com.gmail.ivanytskyy.vitaliy.utils.HttpResponseCodeRanges.*;
 import com.gmail.ivanytskyy.vitaliy.utils.PasswordGenerateService;
 import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.io.IOException;
@@ -123,5 +125,121 @@ public class AuthTest extends BaseTest{
                 .build();
         AuthController authController = new AuthController();
         authController.signUp(permit);
+    }
+    @Test(description = "Create user (username = null). Negative case.", priority = 60)
+    public void signUpInvalidUsernameAsNullTest() throws IOException {
+        AuthController controller = new AuthController();
+        String password = new PasswordGenerateService.Builder()
+                .useLowerCaseLetters(true)
+                .useUpperCaseLetters(true)
+                .useDigits(true)
+                .usePunctuationSymbols(true)
+                .build().generatePassword(9);
+        JSONObject json = new JSONObject();
+        json.put("username", JSONObject.NULL)
+                .put("password", password)
+                .put("confirmPassword", password);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (password = null). Negative case.", priority = 70)
+    public void signUpInvalidPasswordAsNullTest() throws IOException {
+        AuthController controller = new AuthController();
+        String username = new Faker().name().username();
+        JSONObject json = new JSONObject();
+        json.put("username", username)
+                .put("password", JSONObject.NULL)
+                .put("confirmPassword", JSONObject.NULL);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (username = true). Negative case.", priority = 80)
+    public void signUpInvalidUsernameAsBooleanTest() throws IOException {
+        AuthController controller = new AuthController();
+        String password = new PasswordGenerateService.Builder()
+                .useLowerCaseLetters(true)
+                .useUpperCaseLetters(true)
+                .useDigits(true)
+                .usePunctuationSymbols(true)
+                .build().generatePassword(9);
+        JSONObject json = new JSONObject();
+        json.put("username", true)
+                .put("password", password)
+                .put("confirmPassword", password);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (password = true). Negative case.", priority = 90)
+    public void signUpInvalidPasswordAsBooleanTest() throws IOException {
+        AuthController controller = new AuthController();
+        String username = new Faker().name().username();
+        JSONObject json = new JSONObject();
+        json.put("username", username)
+                .put("password", true)
+                .put("confirmPassword", true);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (username is number). Negative case.", priority = 100)
+    public void signUpInvalidUsernameAsNumberTest() throws IOException {
+        AuthController controller = new AuthController();
+        String password = new PasswordGenerateService.Builder()
+                .useLowerCaseLetters(true)
+                .useUpperCaseLetters(true)
+                .useDigits(true)
+                .usePunctuationSymbols(true)
+                .build().generatePassword(9);
+        JSONObject json = new JSONObject();
+        json.put("username", 25)
+                .put("password", password)
+                .put("confirmPassword", password);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (password is number). Negative case.", priority = 110)
+    public void signUpInvalidPasswordAsNumberTest() throws IOException {
+        AuthController controller = new AuthController();
+        String username = new Faker().name().username();
+        JSONObject json = new JSONObject();
+        json.put("username", username)
+                .put("password", 34)
+                .put("confirmPassword", 34);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (username is empty string). Negative case.", priority = 120)
+    public void signUpInvalidUsernameAsEmptyStringTest() throws IOException {
+        AuthController controller = new AuthController();
+        String password = new PasswordGenerateService.Builder()
+                .useLowerCaseLetters(true)
+                .useUpperCaseLetters(true)
+                .useDigits(true)
+                .usePunctuationSymbols(true)
+                .build().generatePassword(9);
+        JSONObject json = new JSONObject();
+        json.put("username", "")
+                .put("password", password)
+                .put("confirmPassword", password);
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
+    }
+    @Test(description = "Create user (password is empty string). Negative case.", priority = 130)
+    public void signUpInvalidPasswordAsEmptyStringTest() throws IOException {
+        AuthController controller = new AuthController();
+        String username = new Faker().name().username();
+        JSONObject json = new JSONObject();
+        json.put("username", username)
+                .put("password", "")
+                .put("confirmPassword", "");
+        int statusCode = controller.signUpNegativeCase(json.toString());
+        Assert.assertTrue(HTTP_400th.inRange(statusCode),
+                "Incorrect HTTP response status code " + statusCode);
     }
 }

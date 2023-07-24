@@ -39,4 +39,6 @@ Add the report generation for completed tests with screenshots of the failed UI 
 - [Selenide](https://selenide.org/documentation.html);
 - [TestNG](https://testng.org/doc/);
 - [Apache Maven](https://maven.apache.org/);
-- [Lombok](https://projectlombok.org/).
+- [Lombok](https://projectlombok.org/);
+- [Gson](https://github.com/google/gson/)
+- [JSON in Java](https://github.com/stleary/JSON-java/)

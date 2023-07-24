@@ -58,4 +58,15 @@ public class AuthController extends BaseController{
             return response.code();
         }
     }
+    public int signUpNegativeCase(String invalidJsonBody) throws IOException {
+        String addToPathString = "/signup";
+        RequestBody requestBody = RequestBody.create(invalidJsonBody, mediaType);
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .post(requestBody)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.code();
+        }
+    }
 }
