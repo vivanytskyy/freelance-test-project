@@ -2,7 +2,7 @@
 <suite name="all_tests">
     <test name="rest">
         <classes>
-            <!--<class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>-->
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>
             <class name="com.gmail.ivanytskyy.vitaliy.rest.AuthTest"/>
         </classes>
     </test>
