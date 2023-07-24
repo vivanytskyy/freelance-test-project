@@ -35,10 +35,10 @@ Tests have to use methods of the Page Object classes.<br>
 Add the report generation for completed tests with screenshots of the failed UI tests.
 
 ## The following technologies and libraries were applied in this project:
-- [Java SE 17](https://docs.oracle.com/en/java/javase/17/);
-- [Selenide](https://selenide.org/documentation.html);
-- [TestNG](https://testng.org/doc/);
-- [Apache Maven](https://maven.apache.org/);
-- [Lombok](https://projectlombok.org/);
+- [Java SE 17](https://docs.oracle.com/en/java/javase/17/)
+- [Selenide](https://selenide.org/documentation.html)
+- [TestNG](https://testng.org/doc/)
+- [Apache Maven](https://maven.apache.org/)
+- [Lombok](https://projectlombok.org/)
 - [Gson](https://github.com/google/gson/)
 - [JSON in Java](https://github.com/stleary/JSON-java/)
