@@ -1,6 +1,6 @@
 package com.gmail.ivanytskyy.vitaliy.rest;
 
-import static com.gmail.ivanytskyy.vitaliy.utils.TestDataGenerateService.*;
+import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.*;
 import com.github.javafaker.Faker;
 import com.gmail.ivanytskyy.vitaliy.rest.controllers.JobController;
 import com.gmail.ivanytskyy.vitaliy.rest.controllers.UserController;
