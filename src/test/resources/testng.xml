@@ -3,8 +3,9 @@
     <test name="rest">
         <classes>
             <!--<class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>
-            <class name="com.gmail.ivanytskyy.vitaliy.rest.AuthTest"/>-->
-            <class name="com.gmail.ivanytskyy.vitaliy.rest.JobTest"/>
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.AuthTest"/>
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.JobTest"/>-->
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.CommentTest"/>
         </classes>
     </test>
     <test name="unit" enabled="false">
