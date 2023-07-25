@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static com.gmail.ivanytskyy.vitaliy.utils.TestDataGenerateService.genPrice;
+import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice;
 
 /**
  * @author Vitaliy Ivanytskyy

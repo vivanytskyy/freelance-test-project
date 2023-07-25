@@ -4,8 +4,9 @@
         <classes>
             <!--<class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>
             <class name="com.gmail.ivanytskyy.vitaliy.rest.AuthTest"/>
-            <class name="com.gmail.ivanytskyy.vitaliy.rest.JobTest"/>-->
-            <class name="com.gmail.ivanytskyy.vitaliy.rest.CommentTest"/>
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.JobTest"/>
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.CommentTest"/>-->
+            <class name="com.gmail.ivanytskyy.vitaliy.rest.ImageTest"/>
         </classes>
     </test>
     <test name="unit" enabled="false">

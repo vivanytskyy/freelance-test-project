@@ -1,6 +1,6 @@
 package com.gmail.ivanytskyy.vitaliy.unit;
 
-import static com.gmail.ivanytskyy.vitaliy.utils.TestDataGenerateService.*;
+import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
  * @version 1.00
  * @date 25/07/2023
  */
-public class TestDataGenerateServiceTest {
+public class TestDataPrepareServiceTest {
 
     @Test(description = "Generate the price. Positive case")
     public void genPriceTest(){
