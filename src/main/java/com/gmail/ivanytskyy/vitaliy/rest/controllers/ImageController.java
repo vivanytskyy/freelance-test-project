@@ -69,4 +69,31 @@ public class ImageController extends BaseController{
             return gson.fromJson(response.body().string(), Profile.class);
         }
     }
+    public int findProfileByUserIdNegativeCase(String userId, String token) throws IOException {
+        String addToPathString = String.format("/%s", userId);
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .addHeader("Authorization", token)
+                .get()
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.code();
+        }
+    }
+    public int uploadFileNegativeCase(String path, String token) throws IOException {
+        String addToPathString = "/upload";
+        RequestBody formBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", path,
+                        RequestBody.create(path, MediaType.parse("image/png")))
+                .build();
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .addHeader("Authorization", token)
+                .post(formBody)
+                .build();
+        try(Response response = httpClient.newCall(request).execute()) {
+            return response.code();
+        }
+    }
 }
