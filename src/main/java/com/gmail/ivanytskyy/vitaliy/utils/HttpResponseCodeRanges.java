@@ -12,8 +12,7 @@ public enum HttpResponseCodeRanges {
     HTTP_200th(n -> n >= 200 && n < 300),
     HTTP_300th(n -> n >= 300 && n < 400),
     HTTP_400th(n -> n >= 400 && n < 500),
-    HTTP_500th(n -> n >= 500 && n < 600),
-    HTTP_600th(n -> n >= 600 && n < 700);
+    HTTP_500th(n -> n >= 500 && n < 600);
     private final Predicate<Integer> inRange;
     HttpResponseCodeRanges(Predicate<Integer> predicate){
         this.inRange = predicate;

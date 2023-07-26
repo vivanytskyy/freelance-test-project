@@ -2,7 +2,6 @@ package com.gmail.ivanytskyy.vitaliy.utils;
 
 import com.gmail.ivanytskyy.vitaliy.rest.controllers.AuthController;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.authorization.UserCredentialsWrapper;
-
 import java.io.IOException;
 
 /**
