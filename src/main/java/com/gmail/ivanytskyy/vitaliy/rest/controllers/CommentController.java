@@ -48,4 +48,27 @@ public class CommentController extends BaseController{
             return gson.fromJson(response.body().string(), Comment[].class);
         }
     }
+    public int createCommentNegativeCase(String invalidJsonBody, String jobId, String token) throws IOException {
+        String addToPathString = String.format("/%s/create", jobId);
+        RequestBody requestBody = RequestBody.create(invalidJsonBody, mediaType);
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .addHeader("Authorization", token)
+                .post(requestBody)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.code();
+        }
+    }
+    public int findAllCommentsByJobIdNegativeCase(String jobId, String token) throws IOException {
+        String addToPathString = String.format("/%s/all", jobId);
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .addHeader("Authorization", token)
+                .get()
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.code();
+        }
+    }
 }
