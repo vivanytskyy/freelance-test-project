@@ -1,5 +1,6 @@
 package com.gmail.ivanytskyy.vitaliy.rest;
 
+import com.aventstack.extentreports.testng.listener.ExtentITestListenerClassAdapter;
 import com.github.javafaker.Faker;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.Job;
 import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
@@ -7,6 +8,7 @@ import com.gmail.ivanytskyy.vitaliy.utils.UserAuthorizationService;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice;
 
 /**
@@ -14,8 +16,13 @@ import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice
  * @version 1.00
  * @date 20/07/2023
  */
+@Listeners({ExtentITestListenerClassAdapter.class})
 public class BaseTest {
     protected String token;
+    static {
+        System.setProperty("extent.reporter.html.start", "true");
+        System.setProperty("extent.reporter.html.out", "target/extentReport/RestExtentHtml.html");
+    }
 
     @BeforeSuite
     public void authorizeUser(){
