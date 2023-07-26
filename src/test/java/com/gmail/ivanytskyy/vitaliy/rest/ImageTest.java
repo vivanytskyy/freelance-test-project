@@ -6,7 +6,6 @@ import com.gmail.ivanytskyy.vitaliy.rest.entities.Profile;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.User;
 import com.gmail.ivanytskyy.vitaliy.rest.exceptions.UnexpectedHttpStatusCodeException;
 import com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService;
-import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -21,7 +20,6 @@ import static com.gmail.ivanytskyy.vitaliy.utils.HttpResponseCodeRanges.*;
  */
 public class ImageTest extends BaseTest{
     private User user;
-    private String token;
     private static final String IMAGE_UPLOADED_SUCCESS_MESSAGE = "User image was uploaded";
     private static final String PATH_TO_IMAGE;
     static {
@@ -32,12 +30,10 @@ public class ImageTest extends BaseTest{
 
     @BeforeMethod
     public void setUp() throws IOException {
-        token = TokenHolder.getInstance().getToken();
         user = new UserController().getUser(token);
     }
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        token = null;
         user = null;
     }
     @Test(description = "Upload file. Positive case.", priority = 10)

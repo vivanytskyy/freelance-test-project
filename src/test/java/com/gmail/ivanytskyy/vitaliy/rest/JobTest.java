@@ -6,11 +6,9 @@ import com.github.javafaker.Faker;
 import com.gmail.ivanytskyy.vitaliy.rest.controllers.JobController;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.Job;
 import com.gmail.ivanytskyy.vitaliy.rest.exceptions.UnexpectedHttpStatusCodeException;
-import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,20 +21,14 @@ import java.util.List;
  * @date 24/07/2023
  */
 public class JobTest extends BaseTest{
-    private String token;
     private static final String JOB_DELETED_SUCCESS_MESSAGE = "Job is deleted";
-    @BeforeMethod
-    public void setUp(){
-        token = TokenHolder.getInstance().getToken();
-    }
+
     @AfterMethod(alwaysRun = true)
     public void tearDown() throws IOException {
-        String localToken = token;
-        token = null;
         JobController jobController = new JobController();
-        Job[] jobs = jobController.findAllJobsForUser(localToken);
+        Job[] jobs = jobController.findAllJobsForUser(token);
         for (Job jobItem : jobs){
-            jobController.deleteJobById(jobItem.getId(), localToken);
+            jobController.deleteJobById(jobItem.getId(), token);
         }
     }
     @Test(description = "Create job. Positive case.", priority = 10)

@@ -6,7 +6,6 @@ import com.gmail.ivanytskyy.vitaliy.rest.controllers.JobController;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.Comment;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.Job;
 import com.gmail.ivanytskyy.vitaliy.rest.exceptions.UnexpectedHttpStatusCodeException;
-import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -26,11 +25,9 @@ import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice
  */
 public class CommentTest extends BaseTest{
     private Long jobId;
-    private String token;
 
     @BeforeMethod
     public void setUp() throws IOException {
-        this.token = TokenHolder.getInstance().getToken();
         final Job job = Job.builder()
                 .title(new Faker().job().title())
                 .description(new Faker().job().field())

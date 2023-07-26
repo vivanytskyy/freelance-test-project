@@ -10,7 +10,6 @@ import com.gmail.ivanytskyy.vitaliy.rest.exceptions.UnexpectedHttpStatusCodeExce
 import com.gmail.ivanytskyy.vitaliy.utils.CredentialPropertiesSupplier;
 import static com.gmail.ivanytskyy.vitaliy.utils.HttpResponseCodeRanges.*;
 import com.gmail.ivanytskyy.vitaliy.utils.PasswordGenerateService;
-import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -49,7 +48,7 @@ public class AuthTest extends BaseTest{
     public void signInTest() throws IOException {
         String defaultUsername = CredentialPropertiesSupplier.getInstance().getProperty("username");
         String defaultPassword = CredentialPropertiesSupplier.getInstance().getProperty("password");
-        String defaultToken = TokenHolder.getInstance().getToken();
+        String defaultToken = token;
         UserCredentialsWrapper permit = UserCredentialsWrapper.builder()
                 .username(defaultUsername)
                 .password(defaultPassword)
