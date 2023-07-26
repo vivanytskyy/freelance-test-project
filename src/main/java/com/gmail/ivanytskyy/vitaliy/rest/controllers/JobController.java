@@ -16,6 +16,7 @@ import java.io.IOException;
  */
 public class JobController extends BaseController{
     private static final String BASE_URL = "https://freelance.lsrv.in.ua/api/job";
+
     public int createJob(Job job, String token) throws IOException {
         String addToPathString = "/create";
         Gson gson = new Gson();
@@ -82,7 +83,6 @@ public class JobController extends BaseController{
     }
     public String deleteJobById(Long jobId, String token) throws IOException {
         String addToPathString = String.format("/delete/%s", jobId);
-        Gson gson = new Gson();
         RequestBody requestBody = RequestBody.create("", mediaType);
         Request request = new Request.Builder()
                 .url(BASE_URL + addToPathString)
@@ -96,6 +96,29 @@ public class JobController extends BaseController{
             assert response.body() != null;
             JSONObject jsonObject = new JSONObject(response.body().string());
             return jsonObject.getString("message");
+        }
+    }
+    public int createJobNegativeCase(String invalidJsonBody, String token) throws IOException {
+        String addToPathString = "/create";
+        RequestBody requestBody = RequestBody.create(invalidJsonBody, mediaType);
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .addHeader("Authorization", token)
+                .post(requestBody)
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.code();
+        }
+    }
+    public int findJobByIdNegativeCase(String jobId, String token) throws IOException {
+        String addToPathString = String.format("/%s", jobId);
+        Request request = new Request.Builder()
+                .url(BASE_URL + addToPathString)
+                .addHeader("Authorization", token)
+                .get()
+                .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            return response.code();
         }
     }
 }
