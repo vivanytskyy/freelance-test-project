@@ -1,6 +1,12 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
 <suite name="all_tests">
-    <test name="rest">
+    <test name="ui_selenide" enabled="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.gmail.ivanytskyy.vitaliy.pages.selenide.FirstTaskTest"/>
+        </classes>
+    </test>
+    <test name="rest" enabled="false">
         <classes>
             <class name="com.gmail.ivanytskyy.vitaliy.rest.UserTest"/>
             <class name="com.gmail.ivanytskyy.vitaliy.rest.AuthTest"/>
