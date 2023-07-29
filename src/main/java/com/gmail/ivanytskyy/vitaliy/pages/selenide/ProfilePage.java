@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.AddJobForm;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.EditUserProfilePopup;
-import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobItemCard;
+import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByMe;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.UserFloatingPanel;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +53,11 @@ public class ProfilePage {
         openJobFormButton.click();
         return new AddJobForm();
     }
-    public JobItemCard getJobItemCard(int index) {
-        return new JobItemCard($("app-my-jobs>div>mat-card", index - 1));
+    public JobCardByMe getJobItemCard(int index) {
+        return new JobCardByMe($("app-my-jobs>div>mat-card", index - 1));
     }
-    public List<JobItemCard> getJobItems(int length){
-        List<JobItemCard> jobItems = new ArrayList<>();
+    public List<JobCardByMe> getJobItems(int length){
+        List<JobCardByMe> jobItems = new ArrayList<>();
         for (int i = 0; i < length; i++){
             jobItems.add(getJobItemCard(i + 1));
         }

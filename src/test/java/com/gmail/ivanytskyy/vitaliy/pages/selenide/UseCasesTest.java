@@ -1,7 +1,8 @@
 package com.gmail.ivanytskyy.vitaliy.pages.selenide;
 
 import com.github.javafaker.Faker;
-import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobItemCard;
+import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByAll;
+import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByMe;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice;
@@ -44,13 +45,36 @@ public class UseCasesTest extends BaseTest{
                 .clickProfileButton()
                 .openJobForm()
                 .addNewJob(title, description, price);
-        JobItemCard postedJob = profilePage.getJobItemCard(1);
+        JobCardByMe postedJob = profilePage.getJobItemCard(1);
         Assert.assertEquals(postedJob.getTitle(), title);
         Assert.assertEquals(postedJob.getDescription(), description);
         Assert.assertEquals(postedJob.getPrice(), price);
         Assert.assertEquals(postedJob.getCommentsNumber(), 0);
         postedJob
                 .clickRemoveButton()
+                .openUserPanel()
+                .clickLogoutButton();
+    }
+    @Test(description = "Use case 3. Leave comment item. Positive test.", priority = 30)
+    public void leaveCommentTest(){
+        String commentText = new Faker().dune().quote();
+        System.out.println(commentText);
+        MainPage mainPage = openApp()
+                .openLoginPage()
+                .loginPositiveCase(getUsername(), getPassword());
+        JobCardByAll jobCardByAll = mainPage.getJobItemCard(1);
+        JobDetailsPage jobDetailsPage = jobCardByAll.clickViewInfoButton();
+        System.out.println("title: " + jobDetailsPage.getTitle());
+        System.out.println("description: " + jobDetailsPage.getDescription());
+        System.out.println("price: " + jobDetailsPage.getPrice());
+        System.out.println("posted by: " + jobDetailsPage.getPostedBy());
+        String leavedComment = jobDetailsPage
+                .leaveComment(commentText)
+                .getLeavedComment(1)
+                .getCommentText();
+        Assert.assertEquals(leavedComment, commentText);
+        jobDetailsPage
+                .closeJobDetails()
                 .openUserPanel()
                 .clickLogoutButton();
     }
