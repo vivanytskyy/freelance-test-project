@@ -8,27 +8,16 @@ import com.gmail.ivanytskyy.vitaliy.pages.selenide.ProfilePage;
  * @version 1.00
  * @date 29/07/2023
  */
-public class JobItemCard {
-    private final SelenideElement container;
-    public JobItemCard(SelenideElement container){
-        this.container = container;
+public class JobCardByMe extends JobCard{
+
+    public JobCardByMe(SelenideElement container) {
+        super(container);
     }
     public ProfilePage clickRemoveButton(){
         container.$("mat-card-actions button").click();
         return new ProfilePage();
     }
-    public String getTitle(){
-        return container.$("div.mat-card-header-text>.mat-card-title").getText();
-    }
-    public String getDescription(){
-        return container.$(".mat-card-content p").getText();
-    }
-    public double getPrice(){
-        String priceAsString = container.$(".mat-card-subtitle.price")
-                .getText()
-                .split(" ")[1];
-        return Double.parseDouble(priceAsString);
-    }
+    @Override
     public int getCommentsNumber(){
         String commentsNumberAsString = container.$("mat-card-subtitle:nth-child(1)")
                 .getText()
