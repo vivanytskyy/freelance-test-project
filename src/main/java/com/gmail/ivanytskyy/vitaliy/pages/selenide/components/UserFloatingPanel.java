@@ -15,6 +15,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class UserFloatingPanel {
     private final SelenideElement profileButton = $("button[routerLink='/profile']");
     private final SelenideElement logoutButton = $x("//button[text()='Logout']");
+
     public ProfilePage clickProfileButton(){
         profileButton
                 .shouldBe(Condition.enabled)

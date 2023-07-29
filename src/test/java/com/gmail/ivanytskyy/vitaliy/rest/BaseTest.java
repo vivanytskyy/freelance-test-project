@@ -5,10 +5,7 @@ import com.github.javafaker.Faker;
 import com.gmail.ivanytskyy.vitaliy.rest.entities.Job;
 import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import com.gmail.ivanytskyy.vitaliy.utils.UserAuthorizationService;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice;
 
 /**
@@ -24,7 +21,7 @@ public class BaseTest {
         System.setProperty("extent.reporter.html.out", "target/extentReport/RestExtentHtml.html");
     }
 
-    @BeforeSuite
+    @BeforeTest
     public void authorizeUser(){
         UserAuthorizationService.authorize();
     }
