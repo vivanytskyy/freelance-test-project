@@ -16,6 +16,7 @@ public class EditUserProfilePopup {
     private final SelenideElement lastNameInput = $x("//input[@formcontrolname='lastname']");
     private final SelenideElement cancelButton = $x("//span[text()=' Cancel ']/parent::button");
     private final SelenideElement updateButton = $x("//span[text()=' Update ']/parent::button");
+
     public EditUserProfilePopup setName(String name){
         nameInput.clear();
         nameInput.sendKeys(name);
