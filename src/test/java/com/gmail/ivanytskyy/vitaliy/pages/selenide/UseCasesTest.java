@@ -57,24 +57,56 @@ public class UseCasesTest extends BaseTest{
     }
     @Test(description = "Use case 3. Leave comment item. Positive test.", priority = 30)
     public void leaveCommentTest(){
-        String commentText = new Faker().dune().quote();
-        System.out.println(commentText);
-        MainPage mainPage = openApp()
+        //Create job
+        String preparedTitle = new Faker().job().title();
+        String preparedDescription = new Faker().job().field();
+        double preparedPrice = genPrice(1000);
+        ProfilePage profilePage = openApp()
                 .openLoginPage()
-                .loginPositiveCase(getUsername(), getPassword());
+                .loginPositiveCase(getUsername(), getPassword())
+                .openUserPanel()
+                .clickProfileButton()
+                .openJobForm()
+                .addNewJob(preparedTitle, preparedDescription, preparedPrice);
+        String userFullName = profilePage.getUserFullName();
+        //Look over the job ad at MainPage
+        MainPage mainPage = profilePage.closeProfile();
         JobCardByAll jobCardByAll = mainPage.getJobItemCard(1);
+        String resultTitle = jobCardByAll.getTitle();
+        String resultDescription = jobCardByAll.getDescription();
+        double resultPrice = jobCardByAll.getPrice();
+        int resultNumberOfComments = jobCardByAll.getCommentsNumber();
+        String resultPostedBy = jobCardByAll.getPostedBy();
+        Assert.assertEquals(resultTitle, preparedTitle);
+        Assert.assertEquals(resultDescription, preparedDescription);
+        Assert.assertEquals(resultPrice, preparedPrice);
+        Assert.assertEquals(resultNumberOfComments, 0);
+        Assert.assertTrue(resultPostedBy.contains(userFullName));
+        //Look over the details of chosen job ad
         JobDetailsPage jobDetailsPage = jobCardByAll.clickViewInfoButton();
-        System.out.println("title: " + jobDetailsPage.getTitle());
-        System.out.println("description: " + jobDetailsPage.getDescription());
-        System.out.println("price: " + jobDetailsPage.getPrice());
-        System.out.println("posted by: " + jobDetailsPage.getPostedBy());
+        String resultTitleInDetails = jobDetailsPage.getTitle();
+        String resultDescriptionInDetails = jobDetailsPage.getDescription();
+        double resultPriceInDetails = jobDetailsPage.getPrice();
+        //int resultNumberOfCommentsInDetails = jobDetailsPage.getCommentsNumber();
+        String resultPostedByInDetails = jobDetailsPage.getPostedBy();
+        Assert.assertEquals(resultTitleInDetails, preparedTitle);
+        Assert.assertEquals(resultDescriptionInDetails, preparedDescription);
+        Assert.assertEquals(resultPriceInDetails, preparedPrice);
+        //Assert.assertEquals(resultNumberOfCommentsInDetails, 0);
+        Assert.assertTrue(resultPostedByInDetails.contains(userFullName));
+        //Create a comment
+        String commentText = new Faker().dune().quote();
         String leavedComment = jobDetailsPage
                 .leaveComment(commentText)
                 .getLeavedComment(1)
                 .getCommentText();
         Assert.assertEquals(leavedComment, commentText);
+        //Delete the job item and log out
         jobDetailsPage
-                .closeJobDetails()
+                .openUserPanel()
+                .clickProfileButton()
+                .getJobItemCard(1)
+                .clickRemoveButton()
                 .openUserPanel()
                 .clickLogoutButton();
     }

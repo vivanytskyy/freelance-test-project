@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Selenide.$x;
  * @version 1.00
  * @date 29/07/2023
  */
-public class JobDetailsPage {
+public class JobDetailsPage extends BasePageRegisteredUser{
     private final SelenideElement title = $("div.mat-card-header-text>.mat-card-title");
     private final SelenideElement description = $(".mat-card-content p");
     private final SelenideElement price = $(".mat-card-subtitle.price");
@@ -52,7 +52,10 @@ public class JobDetailsPage {
         return new JobDetailsPage();
     }
     public CommentCard getLeavedComment(int index){
-        return new CommentCard($(".comments:nth-child(1)>mat-card", index - 1));
+        return new CommentCard(
+                $(".comments:nth-child(1)>mat-card", index - 1)
+                        .shouldBe(Condition.exist)
+                        .shouldBe(Condition.visible));
     }
     public List<CommentCard> getLeavedComments(int length){
         List<CommentCard> commentItems = new ArrayList<>();
