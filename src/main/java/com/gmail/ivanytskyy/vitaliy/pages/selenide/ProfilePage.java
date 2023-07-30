@@ -1,11 +1,9 @@
 package com.gmail.ivanytskyy.vitaliy.pages.selenide;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.AddJobForm;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.EditUserProfilePopup;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByMe;
-import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.UserFloatingPanel;
 import java.util.ArrayList;
 import java.util.List;
 import static com.codeborne.selenide.Selenide.*;
@@ -15,7 +13,7 @@ import static com.codeborne.selenide.Selenide.*;
  * @version 1.00
  * @date 27/07/2023
  */
-public class ProfilePage {
+public class ProfilePage extends BasePageRegisteredUser{
     private final SelenideElement profileTitle = $("h1");
     private final SelenideElement username = $(".col h2");
     private final SelenideElement userFullName = $(".col h3");
@@ -30,7 +28,6 @@ public class ProfilePage {
     private final SelenideElement imageInput =
             $x("//img[@class='profile-image'] /parent::div/input");
     private final SelenideElement jobItemsBlockTitle = $x("//app-my-jobs//h2");
-    private final SelenideElement userPanelButton = $("button[mattooltip='Profile']");
 
 
     public String getPageTitle(){
@@ -46,7 +43,7 @@ public class ProfilePage {
         editInfoButton.click();
         return new EditUserProfilePopup();
     }
-    public String getJobItemsBlockTitle(){
+    public String getJobItemsSectionTitle(){
         return jobItemsBlockTitle.getText();
     }
     public AddJobForm openJobForm(){
@@ -63,8 +60,8 @@ public class ProfilePage {
         }
         return jobItems;
     }
-    public UserFloatingPanel openUserPanel(){
-        userPanelButton.shouldBe(Condition.enabled).click();
-        return new UserFloatingPanel();
+    public MainPage closeProfile(){
+        closeProfileButton.click();
+        return new MainPage();
     }
 }
