@@ -14,7 +14,11 @@ public abstract class BasePageRegisteredUser {
     private final SelenideElement userPanelButton = $("button[mattooltip='Profile']");
 
     public UserFloatingPanel openUserPanel(){
-        userPanelButton.shouldBe(Condition.enabled).click();
+        userPanelButton
+                .shouldBe(Condition.exist)
+                .shouldBe(Condition.enabled)
+                .shouldBe(Condition.visible)
+                .click();
         return new UserFloatingPanel();
     }
 }

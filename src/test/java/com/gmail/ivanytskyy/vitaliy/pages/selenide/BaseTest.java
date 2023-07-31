@@ -31,6 +31,7 @@ public class BaseTest {
     public void beforeClass(String browser) throws IOException {
         Configuration.baseUrl = TestProperties.getInstance().getProperty("base_url");
         Configuration.browser = browser;
+        Configuration.timeout = 6000;
     }
     protected HomePage openApp(){
         open(Configuration.baseUrl);
