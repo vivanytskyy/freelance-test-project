@@ -5,8 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.CommentCard;
 import java.util.ArrayList;
 import java.util.List;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 /**
  * @author Vitaliy Ivanytskyy
@@ -53,9 +52,7 @@ public class JobDetailsPage extends BasePageRegisteredUser{
     }
     public CommentCard getLeavedComment(int index){
         return new CommentCard(
-                $(".comments:nth-child(1)>mat-card", index - 1)
-                        .shouldBe(Condition.exist)
-                        .shouldBe(Condition.visible));
+                $$x("//div[@class='comments']/div/mat-card").get(index - 1));
     }
     public List<CommentCard> getLeavedComments(int length){
         List<CommentCard> commentItems = new ArrayList<>();

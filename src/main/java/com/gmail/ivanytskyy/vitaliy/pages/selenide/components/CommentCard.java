@@ -14,12 +14,12 @@ public class CommentCard {
         this.container = container;
     }
     public String getAddedBy(){
-        return container.$(".comments mat-card-subtitle:nth-child(1)>span").getText();
+        return container.$x("./mat-card-subtitle[1]/span").getText();
     }
     public String getCommentText(){
-        return container.$(".comments mat-card-content>p").getText();
+        return container.$x("./mat-card-content/p").getText();
     }
     public String getLeavedTimeAgo(){
-        return container.$(".comments mat-card-subtitle:nth-child(2)>span").getText();
+        return container.$x("./mat-card-subtitle[2]/span").getText();
     }
 }

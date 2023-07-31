@@ -1,5 +1,6 @@
 package com.gmail.ivanytskyy.vitaliy.pages.selenide.components;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.JobDetailsPage;
 
@@ -14,7 +15,10 @@ public class JobCardByAll extends JobCard{
         super(container);
     }
     public JobDetailsPage clickViewInfoButton(){
-        container.$("mat-card-actions button").click();
+        container.$("mat-card-actions button")
+                .shouldBe(Condition.exist)
+                .shouldBe(Condition.enabled)
+                .click();
         return new JobDetailsPage();
     }
     public String getPostedBy(){

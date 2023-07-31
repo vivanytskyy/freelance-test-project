@@ -5,6 +5,7 @@ import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByAll;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByMe;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.util.function.Function;
 import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice;
 
 /**
@@ -13,7 +14,8 @@ import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice
  * @date 27/07/2023
  */
 public class UseCasesTest extends BaseTest{
-    @Test(description = "Use case 1. Update profile. Positive test.", priority = 10)
+
+    @Test(description = "Use case 1. Update profile. Positive test.", priority = 10, enabled = true)
     public void updateProfileTest(){
         Faker faker = new Faker();
         String newName = faker.name().firstName();
@@ -33,7 +35,7 @@ public class UseCasesTest extends BaseTest{
                 .openUserPanel()
                 .clickLogoutButton();
     }
-    @Test(description = "Use case 2. Create job item. Positive test.", priority = 20)
+    @Test(description = "Use case 2. Create job item. Positive test.", priority = 20, enabled = true)
     public void createJobItemTest(){
         String title = new Faker().job().title();
         String description = new Faker().job().field();
@@ -55,7 +57,7 @@ public class UseCasesTest extends BaseTest{
                 .openUserPanel()
                 .clickLogoutButton();
     }
-    @Test(description = "Use case 3. Leave comment item. Positive test.", priority = 30)
+    @Test(description = "Use case 3. Leave comment item. Positive test.", priority = 30, enabled = true)
     public void leaveCommentTest(){
         //Create job
         String preparedTitle = new Faker().job().title();
@@ -87,12 +89,10 @@ public class UseCasesTest extends BaseTest{
         String resultTitleInDetails = jobDetailsPage.getTitle();
         String resultDescriptionInDetails = jobDetailsPage.getDescription();
         double resultPriceInDetails = jobDetailsPage.getPrice();
-        //int resultNumberOfCommentsInDetails = jobDetailsPage.getCommentsNumber();
         String resultPostedByInDetails = jobDetailsPage.getPostedBy();
         Assert.assertEquals(resultTitleInDetails, preparedTitle);
         Assert.assertEquals(resultDescriptionInDetails, preparedDescription);
         Assert.assertEquals(resultPriceInDetails, preparedPrice);
-        //Assert.assertEquals(resultNumberOfCommentsInDetails, 0);
         Assert.assertTrue(resultPostedByInDetails.contains(userFullName));
         //Create a comment
         String commentText = new Faker().dune().quote();
@@ -107,6 +107,72 @@ public class UseCasesTest extends BaseTest{
                 .clickProfileButton()
                 .getJobItemCard(1)
                 .clickRemoveButton()
+                .openUserPanel()
+                .clickLogoutButton();
+    }
+    @Test(description = "Use case 4. Check number of own jobs and number of comments to them. Positive test.",
+            priority = 40)
+    public void checkNumberOfOwnJobItemsAndNumberOfCommentsToThemTest(){
+        //Create several jobs
+        int numberOfJobs = 3;
+        ProfilePage profilePage = openApp()
+                .openLoginPage()
+                .loginPositiveCase(getUsername(), getPassword())
+                .openUserPanel()
+                .clickProfileButton();
+        for (int i = 0; i < numberOfJobs; i++){
+            String title = new Faker().job().title();
+            String description = new Faker().job().field();
+            double price = genPrice(1000);
+            profilePage
+                    .openJobForm()
+                    .addNewJob(title, description, price);
+            JobCardByMe postedJob = profilePage.getJobItemCard(1);
+            Assert.assertEquals(postedJob.getTitle(), title);
+            Assert.assertEquals(postedJob.getDescription(), description);
+            Assert.assertEquals(postedJob.getPrice(), price);
+            Assert.assertEquals(postedJob.getCommentsNumber(), 0);
+        }
+        //Add Comments to own jobs (for even jobs add 1 comments, for odd jobs add 2 comments)
+        Function<Integer, Integer> getNumberOfComments = n -> n % 2 == 0 ? 1 : 2;
+        MainPage mainPage = profilePage.closeProfile();
+        for(int i = 0; i < numberOfJobs; i++){
+            int index = i + 1;
+            int numberOfComments = getNumberOfComments.apply(index);
+            while (numberOfComments != 0){
+                String commentText = new Faker().dune().quote();
+                mainPage
+                        .getJobItemCard(index)
+                        .clickViewInfoButton()
+                        .leaveComment(commentText)
+                        .closeJobDetails();
+                numberOfComments--;
+            }
+        }
+        //Check number of jobs
+        profilePage = mainPage
+                .openUserPanel()
+                .clickProfileButton();
+        int resultNumberOfJobs = Integer.parseInt(profilePage
+                .getJobItemsSectionTitle()
+                .replaceAll("[^0-9]", ""));
+        Assert.assertEquals(resultNumberOfJobs, numberOfJobs);
+        //Check number of comments
+        int index = 1;
+        for(int i = 0; i < numberOfJobs; i++){
+            int expectedNumberOfComments = getNumberOfComments.apply(index);
+            int resultNumberOfComments = profilePage
+                    .getJobItemCard(index)
+                    .getCommentsNumber();
+            Assert.assertEquals(resultNumberOfComments, expectedNumberOfComments);
+            index++;
+        }
+        //Delete all job items;
+        for(int i = 0; i < numberOfJobs; i++){
+            profilePage.getJobItemCard(1).clickRemoveButton();
+        }
+        //Log out
+        profilePage
                 .openUserPanel()
                 .clickLogoutButton();
     }
