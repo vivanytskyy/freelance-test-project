@@ -3,8 +3,12 @@ package com.gmail.ivanytskyy.vitaliy.pages.selenide;
 import com.github.javafaker.Faker;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByAll;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByMe;
+import com.gmail.ivanytskyy.vitaliy.rest.controllers.JobController;
+import com.gmail.ivanytskyy.vitaliy.rest.entities.Job;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import java.io.IOException;
 import java.util.function.Function;
 import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice;
 
@@ -15,6 +19,15 @@ import static com.gmail.ivanytskyy.vitaliy.utils.TestDataPrepareService.genPrice
  */
 public class UseCasesTest extends BaseTest{
 
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() throws IOException {
+        super.tearDown();
+        JobController jobController = new JobController();
+        Job[] jobs = jobController.findAllJobsForUser(token);
+        for (Job jobItem : jobs){
+            jobController.deleteJobById(jobItem.getId(), token);
+        }
+    }
     @Test(description = "Use case 1. Update profile. Positive test.", priority = 10, enabled = true)
     public void updateProfileTest(){
         Faker faker = new Faker();

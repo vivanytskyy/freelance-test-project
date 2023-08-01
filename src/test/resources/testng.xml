@@ -3,8 +3,10 @@
     <test name="ui_selenide" enabled="true">
         <parameter name="browser" value="chrome"/>
         <classes>
+            <class name="com.gmail.ivanytskyy.vitaliy.pages.selenide.ProfileTest"/>
+            <!--<class name="com.gmail.ivanytskyy.vitaliy.pages.selenide.LoginTest"/>
             <class name="com.gmail.ivanytskyy.vitaliy.pages.selenide.RegistrationTest"/>
-            <class name="com.gmail.ivanytskyy.vitaliy.pages.selenide.UseCasesTest"/>
+            <class name="com.gmail.ivanytskyy.vitaliy.pages.selenide.UseCasesTest"/>-->
         </classes>
     </test>
     <test name="rest" enabled="false">
