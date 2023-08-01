@@ -33,7 +33,7 @@ public class RegistrationTest extends BaseTest{
                 .openUserPanel().clickProfileButton();
         String resultUsername = profilePage.getUsername();
         profilePage.openUserPanel().clickLogoutButton();
-        Assert.assertEquals(resultUsername, randomUser.username);
+        Assert.assertEquals(resultUsername, randomUser.username, "Unexpected username");
     }
     @Test(description = "Registration (min length of password). Positive test", priority = 20)
     public void registrationPasswordMinLengthTest(){
@@ -51,7 +51,7 @@ public class RegistrationTest extends BaseTest{
                 .openUserPanel().clickProfileButton();
         String resultUsername = profilePage.getUsername();
         profilePage.openUserPanel().clickLogoutButton();
-        Assert.assertEquals(resultUsername, randomUser.username);
+        Assert.assertEquals(resultUsername, randomUser.username, "Unexpected username");
     }
     @Test(description = "Registration (password length less min value). Negative test", priority = 30)
     public void registrationPasswordLessMinLengthNegativeTest(){
@@ -69,7 +69,7 @@ public class RegistrationTest extends BaseTest{
                 .clickLoginLink()
                 .loginNegativeCase(randomUser.username, password);
         String resultTitle = loginPage.getTitle();
-        Assert.assertEquals(resultTitle, expectedTitle);
+        Assert.assertEquals(resultTitle, expectedTitle, "Unexpected title");
     }
 
     private static class RandomUser {

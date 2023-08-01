@@ -23,7 +23,7 @@ public class LoginTest extends BaseTest{
         profilePage
                 .openUserPanel()
                 .clickLogoutButton();
-        Assert.assertEquals(resultUsername, getUsername());
+        Assert.assertEquals(resultUsername, getUsername(), "Unexpected username");
     }
     @Test(description = "Check link from LoginPage to RegisterPage. Positive test", priority = 20)
     public void linkFromLoginPageToRegisterPageTest(){
@@ -32,7 +32,7 @@ public class LoginTest extends BaseTest{
                 .openLoginPage()
                 .clickRegisterLink()
                 .getPageTitle();
-        Assert.assertEquals(expectedTitle, resultTitle);
+        Assert.assertEquals(expectedTitle, resultTitle, "Unexpected title");
     }
     @Test(description = "Login (invalid username). Negative test", priority = 30)
     public void loginInvalidUsernameTest(){
@@ -42,7 +42,7 @@ public class LoginTest extends BaseTest{
                 .openLoginPage()
                 .loginNegativeCase(invalidUsername, getPassword())
                 .getTitle();
-        Assert.assertEquals(resultTitle, expectedTitle);
+        Assert.assertEquals(resultTitle, expectedTitle, "Unexpected title");
     }
     @Test(description = "Login (invalid password). Negative test", priority = 40)
     public void loginInvalidPasswordTest(){
@@ -57,6 +57,6 @@ public class LoginTest extends BaseTest{
                 .openLoginPage()
                 .loginNegativeCase(getUsername(), invalidPassword)
                 .getTitle();
-        Assert.assertEquals(resultTitle, expectedTitle);
+        Assert.assertEquals(resultTitle, expectedTitle, "Unexpected title");
     }
 }

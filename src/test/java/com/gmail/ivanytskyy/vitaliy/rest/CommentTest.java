@@ -57,7 +57,8 @@ public class CommentTest extends BaseTest{
                 .build();
         CommentController controller = new CommentController();
         int code = controller.createComment(comment, jobId, token);
-        Assert.assertEquals(code, 200);
+        Assert.assertEquals(code, 200,
+                "Incorrect HTTP response status code. Expected 200 but got " + code);
     }
     @Test(description = "Find all comments. Positive case", priority = 20)
     public void findAllCommentsByJobIdTest() throws IOException {
@@ -70,9 +71,9 @@ public class CommentTest extends BaseTest{
             controller.createComment(comment, jobId, token);
         }
         List<Comment> resultComments = Arrays.asList(controller.findAllCommentsByJobId(jobId, token));
-        Assert.assertEquals(resultComments.size(), comments.size());
+        Assert.assertEquals(resultComments.size(), comments.size(), "Not all the comments were found");
         for (Comment comment : comments){
-            Assert.assertTrue(resultComments.contains(comment));
+            Assert.assertTrue(resultComments.contains(comment), "Not all the comments were found");
         }
     }
     @Test(description = "Create comment with invalid token. Negative case.", priority = 30,
@@ -109,7 +110,7 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), "-1", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create comment with invalid jobId (jobId = 0). Negative case.", priority = 60)
     public void createCommentWithInvalidJobIdAsZeroTest() throws IOException {
@@ -120,7 +121,7 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), "0", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create comment with invalid jobId (job doesn't exist). Negative case.", priority = 70)
     public void createCommentWithInvalidJobIdDoesNotExistTest() throws IOException {
@@ -131,21 +132,21 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), Long.MAX_VALUE + "", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Find all comments with invalid jobId (negative number). Negative case.", priority = 80)
     public void findAllCommentsByInvalidJobIdAsNegativeNumberTest() throws IOException {
         int statusCode = new CommentController()
                 .findAllCommentsByJobIdNegativeCase("-1", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Find all comments with invalid jobId (jobId = 0). Negative case.", priority = 90)
     public void findAllCommentsByInvalidJobIdAsZeroTest() throws IOException {
         int statusCode = new CommentController()
                 .findAllCommentsByJobIdNegativeCase("0", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Find all comments with invalid jobId (job doesn't exist). Negative case.",
             priority = 100)
@@ -153,7 +154,7 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .findAllCommentsByJobIdNegativeCase(Long.MAX_VALUE + "", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create comment (message = null). Negative case.", priority = 110)
     public void createCommentInvalidMessageAsNullTest() throws IOException {
@@ -164,7 +165,7 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), String.valueOf(jobId), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create comment (message = true). Negative case.", priority = 120)
     public void createCommentInvalidMessageAsBooleanTest() throws IOException {
@@ -175,7 +176,7 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), String.valueOf(jobId), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create comment (message = number). Negative case.", priority = 130)
     public void createCommentInvalidMessageAsNumberTest() throws IOException {
@@ -186,7 +187,7 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), String.valueOf(jobId), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create comment (message is empty string). Negative case.", priority = 140)
     public void createCommentInvalidMessageAsEmptyStringTest() throws IOException {
@@ -197,6 +198,6 @@ public class CommentTest extends BaseTest{
         int statusCode = new CommentController()
                 .createCommentNegativeCase(json.toString(), String.valueOf(jobId), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
 }

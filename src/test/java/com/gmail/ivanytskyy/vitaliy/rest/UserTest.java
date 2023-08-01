@@ -23,14 +23,14 @@ public class UserTest extends BaseTest{
         String defaultUsername = CredentialPropertiesSupplier.getInstance().getProperty("username");
         UserController controller = new UserController();
         User user = controller.getUser(token);
-        Assert.assertEquals(user.getUsername(), defaultUsername);
+        Assert.assertEquals(user.getUsername(), defaultUsername, "Expected user wasn't gotten by token");
     }
     @Test(description = "Get user by valid id. Positive case.", priority = 20)
     public void findUserByValidIdTest() throws IOException {
         UserController controller = new UserController();
         User defaulUser = controller.getUser(token);
         User resultUser = controller.findUserById(defaulUser.getId(), token);
-        Assert.assertEquals(resultUser, defaulUser);
+        Assert.assertEquals(resultUser, defaulUser, "Expected user wasn't gotten by id");
     }
     @Test(description = "Update user. Positive case.", priority = 30)
     public void updateUserTest() throws IOException {
@@ -40,7 +40,7 @@ public class UserTest extends BaseTest{
         defaulUser.setName(faker.name().firstName());
         defaulUser.setLastname(faker.name().lastName());
         controller.updateUser(defaulUser, token);
-        Assert.assertEquals(controller.getUser(token), defaulUser);
+        Assert.assertEquals(controller.getUser(token), defaulUser, "User wasn't updated");
     }
     @Test(description = "Get user by invalid token. Negative case.", priority = 40,
             expectedExceptions = UnexpectedHttpStatusCodeException.class)
@@ -55,42 +55,42 @@ public class UserTest extends BaseTest{
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("-1", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is 0). Negative case.", priority = 60)
     public void findUserByInvalidIdAsZeroTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("0", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get user by id (user doesn't exist). Negative case.", priority = 70)
     public void findUserByIdUserDoesNotExistTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase(Long.MAX_VALUE + "", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is null). Negative case.", priority = 80)
     public void findUserByInvalidIdAsNullTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("null", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is true). Negative case.", priority = 90)
     public void findUserByInvalidIdAsTrueTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("true", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is NaN). Negative case.", priority = 100)
     public void findUserByInvalidIdAsNaNTest() throws IOException {
         UserController controller = new UserController();
         int statusCode = controller.findUserByIdNegativeCase("NaN", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get user by invalid id (id is float number as string). Negative case.", priority = 110)
     public void findUserByInvalidIdAsFloatNumberTest() throws IOException {
@@ -99,7 +99,7 @@ public class UserTest extends BaseTest{
         int statusCode = controller.findUserByIdNegativeCase(
                 defaulUser.getId() + ".0", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (name = null). Negative case.", priority = 120)
     public void updateUserInvalidNameAsNullTest() throws IOException {
@@ -113,7 +113,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", lastname);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (lastname = null). Negative case.", priority = 130)
     public void updateUserInvalidLastNameAsNullTest() throws IOException {
@@ -127,7 +127,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", JSONObject.NULL);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (name = false). Negative case.", priority = 140)
     public void updateUserInvalidNameAsBooleanTest() throws IOException {
@@ -141,7 +141,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", lastname);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (lastname = true). Negative case.", priority = 150)
     public void updateUserInvalidLastNameAsBooleanTest() throws IOException {
@@ -155,7 +155,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", true);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (name is number). Negative case.", priority = 160)
     public void updateUserInvalidNameAsNumberTest() throws IOException {
@@ -169,7 +169,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", lastname);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (lastname is number). Negative case.", priority = 170)
     public void updateUserInvalidLastNameAsNumberTest() throws IOException {
@@ -183,7 +183,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", 15);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (name is empty string). Negative case.", priority = 180)
     public void updateUserInvalidNameAsEmptyStringTest() throws IOException {
@@ -197,7 +197,7 @@ public class UserTest extends BaseTest{
                 .put("lastname", lastname);
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Update user (lastname is empty string). Negative case.", priority = 190)
     public void updateUserInvalidLastNameAsEmptyStringTest() throws IOException {
@@ -211,6 +211,6 @@ public class UserTest extends BaseTest{
                 .put("lastname", "");
         int statusCode = controller.updateUserNegativeCase(json.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
 }

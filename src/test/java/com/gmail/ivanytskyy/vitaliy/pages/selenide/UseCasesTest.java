@@ -28,7 +28,7 @@ public class UseCasesTest extends BaseTest{
             jobController.deleteJobById(jobItem.getId(), token);
         }
     }
-    @Test(description = "Use case 1. Update profile. Positive test.", priority = 10, enabled = true)
+    @Test(description = "Use case 1. Update profile. Positive test.", priority = 10)
     public void updateProfileTest(){
         Faker faker = new Faker();
         String newName = faker.name().firstName();
@@ -43,12 +43,12 @@ public class UseCasesTest extends BaseTest{
                 .openEditProfilePopup()
                 .updateUserData(newName, newLastName)
                 .getUserFullName();
-        Assert.assertEquals(correctedUserFullName, newUserFullName);
+        Assert.assertEquals(correctedUserFullName, newUserFullName, "Unexpected user full name");
         profilePage
                 .openUserPanel()
                 .clickLogoutButton();
     }
-    @Test(description = "Use case 2. Create job item. Positive test.", priority = 20, enabled = true)
+    @Test(description = "Use case 2. Create job item. Positive test.", priority = 20)
     public void createJobItemTest(){
         String title = new Faker().job().title();
         String description = new Faker().job().field();
@@ -61,16 +61,16 @@ public class UseCasesTest extends BaseTest{
                 .openJobForm()
                 .addNewJob(title, description, price);
         JobCardByMe postedJob = profilePage.getJobItemCard(1);
-        Assert.assertEquals(postedJob.getTitle(), title);
-        Assert.assertEquals(postedJob.getDescription(), description);
-        Assert.assertEquals(postedJob.getPrice(), price);
-        Assert.assertEquals(postedJob.getCommentsNumber(), 0);
+        Assert.assertEquals(postedJob.getTitle(), title, "Unexpected title");
+        Assert.assertEquals(postedJob.getDescription(), description, "Unexpected description");
+        Assert.assertEquals(postedJob.getPrice(), price, "Unexpected price");
+        Assert.assertEquals(postedJob.getCommentsNumber(), 0, "Unexpected number of comments");
         postedJob
                 .clickRemoveButton()
                 .openUserPanel()
                 .clickLogoutButton();
     }
-    @Test(description = "Use case 3. Leave comment item. Positive test.", priority = 30, enabled = true)
+    @Test(description = "Use case 3. Leave comment item. Positive test.", priority = 30)
     public void leaveCommentTest(){
         //Create job
         String preparedTitle = new Faker().job().title();
@@ -92,28 +92,30 @@ public class UseCasesTest extends BaseTest{
         double resultPrice = jobCardByAll.getPrice();
         int resultNumberOfComments = jobCardByAll.getCommentsNumber();
         String resultPostedBy = jobCardByAll.getPostedBy();
-        Assert.assertEquals(resultTitle, preparedTitle);
-        Assert.assertEquals(resultDescription, preparedDescription);
-        Assert.assertEquals(resultPrice, preparedPrice);
-        Assert.assertEquals(resultNumberOfComments, 0);
-        Assert.assertTrue(resultPostedBy.contains(userFullName));
+        Assert.assertEquals(resultTitle, preparedTitle, "Unexpected title");
+        Assert.assertEquals(resultDescription, preparedDescription, "Unexpected description");
+        Assert.assertEquals(resultPrice, preparedPrice, "Unexpected price");
+        Assert.assertEquals(resultNumberOfComments, 0, "Unexpected number of comments");
+        Assert.assertTrue(resultPostedBy.contains(userFullName), "Not matching user full name");
         //Look over the details of chosen job ad
         JobDetailsPage jobDetailsPage = jobCardByAll.clickViewInfoButton();
         String resultTitleInDetails = jobDetailsPage.getTitle();
         String resultDescriptionInDetails = jobDetailsPage.getDescription();
         double resultPriceInDetails = jobDetailsPage.getPrice();
         String resultPostedByInDetails = jobDetailsPage.getPostedBy();
-        Assert.assertEquals(resultTitleInDetails, preparedTitle);
-        Assert.assertEquals(resultDescriptionInDetails, preparedDescription);
-        Assert.assertEquals(resultPriceInDetails, preparedPrice);
-        Assert.assertTrue(resultPostedByInDetails.contains(userFullName));
+        Assert.assertEquals(resultTitleInDetails, preparedTitle, "Unexpected title in JobDetails");
+        Assert.assertEquals(resultDescriptionInDetails, preparedDescription,
+                "Unexpected description in JobDetails");
+        Assert.assertEquals(resultPriceInDetails, preparedPrice, "Unexpected price in JobDetails");
+        Assert.assertTrue(resultPostedByInDetails.contains(userFullName),
+                "Not matching user full name in JobDetails");
         //Create a comment
         String commentText = new Faker().dune().quote();
         String leavedComment = jobDetailsPage
                 .leaveComment(commentText)
                 .getLeavedComment(1)
                 .getCommentText();
-        Assert.assertEquals(leavedComment, commentText);
+        Assert.assertEquals(leavedComment, commentText, "Unexpected text of comment");
         //Delete the job item and log out
         jobDetailsPage
                 .openUserPanel()
@@ -141,10 +143,10 @@ public class UseCasesTest extends BaseTest{
                     .openJobForm()
                     .addNewJob(title, description, price);
             JobCardByMe postedJob = profilePage.getJobItemCard(1);
-            Assert.assertEquals(postedJob.getTitle(), title);
-            Assert.assertEquals(postedJob.getDescription(), description);
-            Assert.assertEquals(postedJob.getPrice(), price);
-            Assert.assertEquals(postedJob.getCommentsNumber(), 0);
+            Assert.assertEquals(postedJob.getTitle(), title, "Unexpected title");
+            Assert.assertEquals(postedJob.getDescription(), description, "Unexpected description");
+            Assert.assertEquals(postedJob.getPrice(), price, "Unexpected price");
+            Assert.assertEquals(postedJob.getCommentsNumber(), 0, "Unexpected number of comments");
         }
         //Add Comments to own jobs (for even jobs add 1 comments, for odd jobs add 2 comments)
         Function<Integer, Integer> getNumberOfComments = n -> n % 2 == 0 ? 1 : 2;
@@ -169,7 +171,7 @@ public class UseCasesTest extends BaseTest{
         int resultNumberOfJobs = Integer.parseInt(profilePage
                 .getJobItemsSectionTitle()
                 .replaceAll("[^0-9]", ""));
-        Assert.assertEquals(resultNumberOfJobs, numberOfJobs);
+        Assert.assertEquals(resultNumberOfJobs, numberOfJobs, "Unexpected number of jobs");
         //Check number of comments
         int index = 1;
         for(int i = 0; i < numberOfJobs; i++){
@@ -177,7 +179,8 @@ public class UseCasesTest extends BaseTest{
             int resultNumberOfComments = profilePage
                     .getJobItemCard(index)
                     .getCommentsNumber();
-            Assert.assertEquals(resultNumberOfComments, expectedNumberOfComments);
+            Assert.assertEquals(resultNumberOfComments, expectedNumberOfComments,
+                    "Unexpected number of comments");
             index++;
         }
         //Delete all job items;
