@@ -1,14 +1,13 @@
 package com.gmail.ivanytskyy.vitaliy.pages.selenide;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.gmail.ivanytskyy.vitaliy.listeners.UISelenideExtentReportsListener;
 import com.gmail.ivanytskyy.vitaliy.utils.CredentialPropertiesSupplier;
 import com.gmail.ivanytskyy.vitaliy.utils.TestProperties;
+import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import com.gmail.ivanytskyy.vitaliy.utils.UserAuthorizationService;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 import java.io.IOException;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -19,6 +18,7 @@ import static com.codeborne.selenide.Selenide.open;
  */
 @Listeners({UISelenideExtentReportsListener.class})
 public class BaseTest {
+    protected String token;
     private static final String USERNAME;
     private static final String PASSWORD;
     static {
@@ -35,6 +35,17 @@ public class BaseTest {
         Configuration.baseUrl = TestProperties.getInstance().getProperty("base_url");
         Configuration.browser = browser;
         Configuration.timeout = 8000;
+        this.token = TokenHolder.getInstance().getToken();
+    }
+    @AfterClass
+    public void afterClass(){
+        this.token = null;
+    }
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() throws IOException {
+        Selenide.clearBrowserCookies();
+        Selenide.clearBrowserLocalStorage();
+        Selenide.sessionStorage().clear();
     }
     protected HomePage openApp(){
         open(Configuration.baseUrl);

@@ -2,6 +2,7 @@ package com.gmail.ivanytskyy.vitaliy.pages.selenide.components;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.JobDetailsPage;
 
 /**
@@ -19,6 +20,8 @@ public class JobCardByAll extends JobCard{
                 .shouldBe(Condition.exist)
                 .shouldBe(Condition.enabled)
                 .click();
+        //todo Sometimes the server doesn't show comments. Send this info to the developer.
+        WebDriverRunner.getWebDriver().navigate().refresh();
         return new JobDetailsPage();
     }
     public String getPostedBy(){
