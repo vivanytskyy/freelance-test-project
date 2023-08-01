@@ -50,7 +50,7 @@ public class JobTest extends BaseTest{
                 .findFirst()
                 .orElse(-1L);
         Job resultJob = jobController.findJobById(jobId, token);
-        Assert.assertEquals(resultJob, job);
+        Assert.assertEquals(resultJob, job, "Expected job wasn't gotten");
     }
     @Test(description = "Find all jobs for user. Positive case.", priority = 30)
     public void findAllJobsForUserTest() throws IOException {
@@ -64,7 +64,7 @@ public class JobTest extends BaseTest{
         }
         List<Job> resultJobs = Arrays.asList(jobController.findAllJobsForUser(token));
         for(Job job : jobs){
-            Assert.assertTrue(resultJobs.contains(job));
+            Assert.assertTrue(resultJobs.contains(job), "Expected job wasn't gotten in list");
         }
     }
     @Test(description = "Find all jobs. Positive case.", priority = 40)
@@ -78,7 +78,8 @@ public class JobTest extends BaseTest{
             jobController.createJob(job, token);
         }
         List<Job> resultJobs = Arrays.asList(jobController.findAllJobs(token));
-        Assert.assertTrue(resultJobs.size() > jobs.size());
+        Assert.assertTrue(resultJobs.size() > jobs.size(),
+                "Not all the created job were found");
     }
     @Test(description = "Delete job by id. Positive case.", priority = 50)
     public void deleteJobByIdTest() throws IOException {
@@ -94,7 +95,8 @@ public class JobTest extends BaseTest{
                 .findFirst()
                 .orElse(-1L);
         String resultMessage = jobController.deleteJobById(jobId, token);
-        Assert.assertEquals(resultMessage, JOB_DELETED_SUCCESS_MESSAGE);
+        Assert.assertEquals(resultMessage, JOB_DELETED_SUCCESS_MESSAGE,
+                "The success message wasn't gotten");
     }
     @Test(description = "Create job by invalid token. Negative case.", priority = 60,
             expectedExceptions = UnexpectedHttpStatusCodeException.class)
@@ -179,7 +181,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (description = null). Negative case.", priority = 120)
     public void createJobInvalidDescriptionAsNullTest() throws IOException {
@@ -194,7 +196,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (price = null). Negative case.", priority = 130)
     public void createJobInvalidPriceAsNullTest() throws IOException {
@@ -209,7 +211,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (title = true). Negative case.", priority = 140)
     public void createJobInvalidTitleAsBooleanTest() throws IOException {
@@ -224,7 +226,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (description = false). Negative case.", priority = 150)
     public void createJobInvalidDescriptionAsBooleanTest() throws IOException {
@@ -239,7 +241,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (price = true). Negative case.", priority = 160)
     public void createJobInvalidPriceAsBooleanTest() throws IOException {
@@ -254,7 +256,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (title is number). Negative case.", priority = 170)
     public void createJobInvalidTitleAsNumberTest() throws IOException {
@@ -269,7 +271,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (description is number). Negative case.", priority = 180)
     public void createJobInvalidDescriptionAsNumberTest() throws IOException {
@@ -284,7 +286,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (price is number as string). Negative case.", priority = 190)
     public void createJobInvalidPriceIsNumberAsStringTest() throws IOException {
@@ -299,7 +301,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (price is string). Negative case.", priority = 200)
     public void createJobInvalidPriceAsStringTest() throws IOException {
@@ -314,7 +316,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (price is negative). Negative case.", priority = 210)
     public void createJobInvalidPriceIsNegativeTest() throws IOException {
@@ -329,7 +331,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (title is empty string). Negative case.", priority = 220)
     public void createJobInvalidTitleAsEmptyStringTest() throws IOException {
@@ -344,7 +346,7 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create job (description is empty string). Negative case.", priority = 230)
     public void createJobInvalidDescriptionAsEmptyStringTest() throws IOException {
@@ -359,27 +361,27 @@ public class JobTest extends BaseTest{
                 .put("noOfComments", 5);
         int statusCode = new JobController().createJobNegativeCase(invalidJson.toString(), token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get job by invalid id (id is negative number). Negative case.", priority = 240)
     public void findJodByInvalidIdAsNegativeNumberTest() throws IOException {
         JobController controller = new JobController();
         int statusCode = controller.findJobByIdNegativeCase("-1", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get job by invalid id (id is 0). Negative case.", priority = 250)
     public void findJobByInvalidIdAsZeroTest() throws IOException {
         JobController controller = new JobController();
         int statusCode = controller.findJobByIdNegativeCase("0", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Get job by id (job doesn't exist). Negative case.", priority = 260)
     public void findJobByInvalidIdJobDoesNotExistTest() throws IOException {
         JobController controller = new JobController();
         int statusCode = controller.findJobByIdNegativeCase(Long.MAX_VALUE + "", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
 }

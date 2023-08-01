@@ -57,10 +57,10 @@ public class AuthTest extends BaseTest{
         AuthController authController = new AuthController();
         TokenResponseWrapper tokenWrapper = authController.signIn(permit);
         String resultToken = tokenWrapper.getToken();
-        Assert.assertNotEquals(resultToken, defaultToken);
+        Assert.assertNotEquals(resultToken, defaultToken, "Different tokens");
         UserController userController = new UserController();
         User resultUser = userController.getUser(resultToken);
-        Assert.assertEquals(resultUser.getUsername(), defaultUsername);
+        Assert.assertEquals(resultUser.getUsername(), defaultUsername, "Different usernames");
     }
     @Test(description = "Create user (min password length = 8). Positive case", priority = 30)
     public void signUpPasswordMinValueTest() throws IOException {
@@ -82,7 +82,7 @@ public class AuthTest extends BaseTest{
         String token = authController.signIn(permit).getToken();
         UserController userController = new UserController();
         User resultUser = userController.getUser(token);
-        Assert.assertEquals(resultUser.getUsername(), username);
+        Assert.assertEquals(resultUser.getUsername(), username, "Different usernames");
     }
     @Test(description = "Create user (password length = 100). Positive case", priority = 40)
     public void signUpPasswordBigValueTest() throws IOException {
@@ -104,7 +104,7 @@ public class AuthTest extends BaseTest{
         String token = authController.signIn(permit).getToken();
         UserController userController = new UserController();
         User resultUser = userController.getUser(token);
-        Assert.assertEquals(resultUser.getUsername(), username);
+        Assert.assertEquals(resultUser.getUsername(), username, "Different usernames");
     }
     @Test(description = "Create user (password length less then min value). Negative case", priority = 50,
             expectedExceptions = UnexpectedHttpStatusCodeException.class)
@@ -140,7 +140,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", password);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (password = null). Negative case.", priority = 70)
     public void signUpInvalidPasswordAsNullTest() throws IOException {
@@ -152,7 +152,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", JSONObject.NULL);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (username = true). Negative case.", priority = 80)
     public void signUpInvalidUsernameAsBooleanTest() throws IOException {
@@ -169,7 +169,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", password);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (password = true). Negative case.", priority = 90)
     public void signUpInvalidPasswordAsBooleanTest() throws IOException {
@@ -181,7 +181,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", true);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (username is number). Negative case.", priority = 100)
     public void signUpInvalidUsernameAsNumberTest() throws IOException {
@@ -198,7 +198,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", password);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (password is number). Negative case.", priority = 110)
     public void signUpInvalidPasswordAsNumberTest() throws IOException {
@@ -210,7 +210,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", 34);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (username is empty string). Negative case.", priority = 120)
     public void signUpInvalidUsernameAsEmptyStringTest() throws IOException {
@@ -227,7 +227,7 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", password);
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Create user (password is empty string). Negative case.", priority = 130)
     public void signUpInvalidPasswordAsEmptyStringTest() throws IOException {
@@ -239,6 +239,6 @@ public class AuthTest extends BaseTest{
                 .put("confirmPassword", "");
         int statusCode = controller.signUpNegativeCase(json.toString());
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
 }

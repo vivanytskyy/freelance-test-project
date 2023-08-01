@@ -41,7 +41,8 @@ public class ImageTest extends BaseTest{
         File file = new File(PATH_TO_IMAGE);
         ImageController imageController = new ImageController();
         String resultMessage = imageController.uploadFile(file, token);
-        Assert.assertEquals(resultMessage, IMAGE_UPLOADED_SUCCESS_MESSAGE);
+        Assert.assertEquals(resultMessage, IMAGE_UPLOADED_SUCCESS_MESSAGE,
+                "The success message wasn't gotten");
     }
     @Test(description = "Find profile by user id. Positive case.", priority = 20)
     public void findProfileByUserIdTest() throws IOException {
@@ -50,7 +51,7 @@ public class ImageTest extends BaseTest{
         ImageController imageController = new ImageController();
         Profile profile = imageController.findProfileByUserId(user.getId(), token);
         String resultImageAsString = profile.getImage();
-        Assert.assertEquals(resultImageAsString, imageAsString);
+        Assert.assertEquals(resultImageAsString, imageAsString, "Different encoded images");
     }
     @Test(description = "Find profile. Positive case.", priority = 30)
     public void findProfileTest() throws IOException {
@@ -59,7 +60,7 @@ public class ImageTest extends BaseTest{
         ImageController imageController = new ImageController();
         Profile profile = imageController.findProfile(token);
         String resultImageAsString = profile.getImage();
-        Assert.assertEquals(resultImageAsString, imageAsString);
+        Assert.assertEquals(resultImageAsString, imageAsString, "Different encoded images");
     }
     @Test(description = "Upload file with invalid token. Negative case.", priority = 40,
             expectedExceptions = UnexpectedHttpStatusCodeException.class)
@@ -91,21 +92,21 @@ public class ImageTest extends BaseTest{
         ImageController imageController = new ImageController();
         int statusCode = imageController.findProfileByUserIdNegativeCase("-1", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Find profile with invalid userId (userId = 0). Negative case.", priority = 80)
     public void findProfileWithInvalidUserIdAsZeroTest() throws IOException {
         ImageController imageController = new ImageController();
         int statusCode = imageController.findProfileByUserIdNegativeCase("0", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Find profile with invalid userId (user doesn't exist). Negative case.", priority = 90)
     public void findProfileWithInvalidUserIdDoesNotExistTest() throws IOException {
         ImageController imageController = new ImageController();
         int statusCode = imageController.findProfileByUserIdNegativeCase(Long.MAX_VALUE + "", token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
     @Test(description = "Upload file (mistake in file name). Negative case.", priority = 100)
     public void uploadFileWithInvalidFileNameTest() throws IOException {
@@ -116,6 +117,6 @@ public class ImageTest extends BaseTest{
         ImageController imageController = new ImageController();
         int statusCode = imageController.uploadFileNegativeCase(invalidPath, token);
         Assert.assertTrue(HTTP_400th.inRange(statusCode),
-                "Incorrect HTTP response status code " + statusCode);
+                "Incorrect HTTP response status code. Expected 400th but got " + statusCode);
     }
 }

@@ -31,10 +31,10 @@ public class ProfileTest extends BaseTest{
         String resultPageTitle = profilePage.getPageTitle();
         String resultJobSectionTitle = profilePage.getJobItemsSectionTitle();
         String resultUsername = profilePage.getUsername();
-        Assert.assertEquals(resultPageTitle, EXPECTED_PAGE_TITLE, "Page title is wrong");
+        Assert.assertEquals(resultPageTitle, EXPECTED_PAGE_TITLE, "Unexpected title");
         Assert.assertEquals(resultJobSectionTitle, EXPECTED_INITIAL_JOB_SECTION_TITLE,
                 "Initial job section title is wrong");
-        Assert.assertEquals(resultUsername, getUsername(), "Posted username is wrong");
+        Assert.assertEquals(resultUsername, getUsername(), "Unexpected username");
     }
     @Test(description = "Test upload a file", priority = 20)
     public void fileUploadTest() throws IOException {
@@ -49,6 +49,6 @@ public class ProfileTest extends BaseTest{
                 .uploadFile()
                 .getImage();
         Assert.assertTrue(resultImageAsString.contains(expectedImageAsString),
-                "Encoded images are dissimilar");
+                "Different encoded images");
     }
 }
