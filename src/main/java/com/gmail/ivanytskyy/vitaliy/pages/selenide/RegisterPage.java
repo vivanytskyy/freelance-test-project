@@ -81,4 +81,7 @@ public class RegisterPage {
         loginLink.click();
         return new LoginPage();
     }
+    public String getPageTitle(){
+        return title.getText();
+    }
 }
