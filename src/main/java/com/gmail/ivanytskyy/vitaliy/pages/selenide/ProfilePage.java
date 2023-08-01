@@ -1,9 +1,11 @@
 package com.gmail.ivanytskyy.vitaliy.pages.selenide;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.AddJobForm;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.EditUserProfilePopup;
 import com.gmail.ivanytskyy.vitaliy.pages.selenide.components.JobCardByMe;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import static com.codeborne.selenide.Selenide.*;
@@ -23,9 +25,11 @@ public class ProfilePage extends BasePageRegisteredUser{
             $x("//span[text()='Close profile'] /parent::button");
     private final SelenideElement openJobFormButton = $("button[routerlink='/profile/add-job']");
     private final SelenideElement profileImage = $("img.profile-image");
-    private final SelenideElement imageDownloadButton =
+    private final SelenideElement pickFileButton =
             $x("//span[text()='Pick File'] /parent::button");
-    private final SelenideElement imageInput =
+    private final SelenideElement fileUploadButton =
+            $x("//span[text()='Upload'] /parent::button");
+    private final SelenideElement imageSelectInput =
             $x("//img[@class='profile-image'] /parent::div/input");
     private final SelenideElement jobItemsBlockTitle = $x("//app-my-jobs//h2");
 
@@ -63,5 +67,20 @@ public class ProfilePage extends BasePageRegisteredUser{
     public MainPage closeProfile(){
         closeProfileButton.click();
         return new MainPage();
+    }
+    public ProfilePage selectFile(File profileImage){
+        imageSelectInput.sendKeys(profileImage.getAbsolutePath());
+        return this;
+    }
+    public ProfilePage uploadFile(){
+        fileUploadButton
+                .should(Condition.exist)
+                .shouldBe(Condition.enabled)
+                .shouldBe(Condition.visible)
+                .click();
+        return new ProfilePage();
+    }
+    public String getImage(){
+        return profileImage.attr("src");
     }
 }

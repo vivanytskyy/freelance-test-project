@@ -17,6 +17,7 @@ public class AddJobForm {
     private final SelenideElement descriptionInput = $("textarea[formcontrolname='description']");
     private final SelenideElement priceInput = $("input[formcontrolname='price']");
     private final SelenideElement addJobButton = $x("//span[text()=' Create job ']/parent::button");
+    private final SelenideElement backButton = $x("//button[@routerLink='/profile']");
     public AddJobForm setJobTitle(String title){
         titleInput.clear();
         titleInput.sendKeys(title);
@@ -44,6 +45,10 @@ public class AddJobForm {
                 .setJobDescription(description)
                 .setJobPrice(price)
                 .clickAddJobButton();
+    }
+    public ProfilePage clickBackButton(){
+        backButton.click();
+        return new ProfilePage();
     }
     public String getFormTitle(){
         return formTitle.getText();

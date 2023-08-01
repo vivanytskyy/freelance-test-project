@@ -8,6 +8,7 @@ import com.gmail.ivanytskyy.vitaliy.utils.TestProperties;
 import com.gmail.ivanytskyy.vitaliy.utils.TokenHolder;
 import com.gmail.ivanytskyy.vitaliy.utils.UserAuthorizationService;
 import org.testng.annotations.*;
+import java.io.File;
 import java.io.IOException;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -21,9 +22,11 @@ public class BaseTest {
     protected String token;
     private static final String USERNAME;
     private static final String PASSWORD;
+    private static final String ABSOLUTE_PATH_TO_REPORTS;
     static {
         USERNAME = CredentialPropertiesSupplier.getInstance().getProperty("username");
         PASSWORD = CredentialPropertiesSupplier.getInstance().getProperty("password");
+        ABSOLUTE_PATH_TO_REPORTS = new File("target" + File.separator + "reports").getAbsolutePath();
     }
     @BeforeTest
     public void authorizeUser(){
@@ -35,6 +38,7 @@ public class BaseTest {
         Configuration.baseUrl = TestProperties.getInstance().getProperty("base_url");
         Configuration.browser = browser;
         Configuration.timeout = 8000;
+        Configuration.reportsFolder = ABSOLUTE_PATH_TO_REPORTS;
         this.token = TokenHolder.getInstance().getToken();
     }
     @AfterClass
