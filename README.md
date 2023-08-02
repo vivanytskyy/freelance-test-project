@@ -42,3 +42,6 @@ Add the report generation for completed tests with screenshots of the failed UI 
 - [Lombok](https://projectlombok.org/)
 - [Gson](https://github.com/google/gson/)
 - [JSON in Java](https://github.com/stleary/JSON-java/)
+- [OkHttp](https://square.github.io/okhttp/)
+- [ExtentReports](https://www.extentreports.com/docs/versions/4/java/)
+- [Java Faker](https://github.com/DiUS/java-faker)
