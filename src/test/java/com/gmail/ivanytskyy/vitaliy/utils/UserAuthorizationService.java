@@ -18,9 +18,6 @@ public class UserAuthorizationService {
                 .password(password)
                 .confirmPassword(password)
                 .build();
-        permit.setUsername(username);
-        permit.setPassword(password);
-        permit.setConfirmPassword(password);
         AuthController authController = new AuthController();
         try {
             if(authController.checkSignInResponseCode(permit) != 200){
