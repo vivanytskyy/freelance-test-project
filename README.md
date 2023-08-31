@@ -1,4 +1,4 @@
-# Final study project in the Hillel QA Automation course.
+# Final test project in the Hillel QA Automation course.
 
 ## The technical assignment
 
